@@ -20,7 +20,9 @@ banner = """%s
 # Create a list of supported hash
 supported_hashes = ["sha1", "sha224", "sha256", "sha384", "sha512", "md5"]
 
+#Display banner
 print(banner)
+
 # Get hash type from user
 hashtype = input("%sEnter your hash type: " % green)
 hashtype = hashtype.casefold()
