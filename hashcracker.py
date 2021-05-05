@@ -26,7 +26,8 @@ supported_hashes = ["sha1", "sha224", "sha256", "sha384", "sha512", "md5"]
 print(banner)
 
 # Get hash type from user
-hashtype = input("%sEnter your hash type: %s" %(green,reset))
+print("\n%sSupported hashes sha1, sha224, sha256, sha384, sh512, md5%s" %(green,reset)) 
+hashtype = input("\n%sEnter the type of your hash: %s" %(green,reset))
 hashtype = hashtype.casefold()
 
 # Sanitize input and check if hashtype is supported
