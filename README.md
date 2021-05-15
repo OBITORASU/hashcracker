@@ -17,7 +17,20 @@ cd hashcracker
 ```
 Step 3:
 ```
-python hashcracker.py
+python3 hascracker.py -H hash -t hash_type -w path_to_wordlist
+```
+
+## Usage:
+```
+usage: hashcracker.py [-h] -H  -t  -w
+
+Hashcracker is a quick script that cracks common hashes using Python.
+
+optional arguments:
+  -h, --help        show this help message and exit
+  -H , --hash       Your hash
+  -t , --type       Type of your hash supported hashes [sha1, sha224, sha256, sha384, sha512, md5]
+  -w , --wordlist   Path to your wordlist
 ```
 
 ---
