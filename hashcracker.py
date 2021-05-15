@@ -86,7 +86,7 @@ def crack_hash(path):
 
     try:
         print("\n%s[+] Trying to crack the hash... %s" %(green,reset))
-        for words in open(path, "r"):
+        for words in open(path, "r", encoding="ISO-8859-1"):
             word = words.rstrip("\n")
             hashed_word = hash_word(word, args.type)
             if args.hash == hashed_word:
