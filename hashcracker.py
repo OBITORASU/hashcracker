@@ -11,6 +11,7 @@ red = "\033[91m"
 green = "\033[92m"    
 reset = "\033[0m"
 
+# Create parser and its arguments
 parser = argparse.ArgumentParser(description="Hashcracker is a quick script that cracks common hashes using Python.")
 parser.add_argument("-H", "--hash", type=str, metavar="", required=True, help="Your hash")
 parser.add_argument("-t", "--type", type=str, metavar="", required=True, help="Type of your hash supported hashes [sha1, sha224, sha256, sha384, sha512, md5]")
@@ -31,7 +32,7 @@ banner = """%s
 #Display banner
 print(banner)
 
-# Create a list of supported hash
+# Create a dictionary containing supported hashes and their respective lengths
 supported_hashes = {"sha1": 40, "sha224": 56, "sha256": 64, "sha384": 96, "sha512": 128, "md5": 32}
 
 # Function to validate hash
