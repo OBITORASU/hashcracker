@@ -8,7 +8,7 @@ red = "\033[91m"
 green = "\033[92m"    
 reset = "\033[0m"
 
-parser = argparse.ArgumentParser(description="Hashcracker is a quick script that cracks common hashes using Python")
+parser = argparse.ArgumentParser(description="Hashcracker is a quick script that cracks common hashes using Python.")
 parser.add_argument("-H", "--hash", type=str, metavar="", required=True, help="Your hash")
 parser.add_argument("-t", "--type", type=str, metavar="", required=True, help="Type of your hash supported hashes [sha1, sha224, sha256, sha384, sha512, md5]")
 parser.add_argument("-w", "--wordlist", type=str, metavar="", required=True, help="Path to your wordlist")
@@ -37,11 +37,8 @@ def check_hash():
     
     hash_length = len(args.hash.casefold())
     hashtype = args.type
-    if hashtype.isspace():
-        print("\n%s[-] Invalid input! %s" %(red,reset))
-        sys.exit(1)
 
-    elif hashtype not in supported_hashes.keys():
+    if hashtype not in supported_hashes.keys():
         print("\n%s[-] {} is not supported by this program %s".format(hashtype) %(red,reset))
         sys.exit(1)
     
@@ -75,6 +72,12 @@ def hash_word(text, algo):
     return hashed_word.hexdigest()
 
 def crack_hash(path):
+    """ Try to crack the hash provided by the user.
+
+    Args:
+        path ([string]): Path to wordlist.
+    """
+
     try:
         print("\n%s[+] Trying to crack the hash... %s" %(green,reset))
         for words in open(path, "r", encoding="ISO-8859-1"):
