@@ -42,7 +42,7 @@ def check_hash():
     hashtype = args.type
 
     if hashtype not in supported_hashes.keys():
-        print("\n%s[-] {} is not supported by this program %s".format(hashtype) %(red,reset))
+        print("\n%s[-] {} hashes are not supported by this program %s".format(hashtype) %(red,reset))
         sys.exit(1)
     
     if hash_length != supported_hashes[hashtype]:
