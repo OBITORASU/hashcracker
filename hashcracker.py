@@ -31,6 +31,7 @@ print(banner)
 # Create a list of supported hash
 supported_hashes = {"sha1": 40, "sha224": 56, "sha256": 64, "sha384": 96, "sha512": 128, "md5": 32}
 
+# Function to validate hash
 def check_hash():
     """ Validate the type and length of hash provided by the user.
     """
@@ -46,6 +47,7 @@ def check_hash():
         print("\n%s[-] Invalid length for {} hash type %s".format(hashtype) %(red,reset))
         sys.exit(1)
 
+# Function to recieve path to wordlist
 def get_wordlist():
     """ Get the wordlist from the user.
 
@@ -57,6 +59,7 @@ def get_wordlist():
     abs_file_path = os.path.join(script_dir, wordlist)
     return abs_file_path
 
+# Function to convert plain text into hashed value
 def hash_word(text, algo):
     """ Takes plain text and hashing algorithm from user and returns the hashed value.
 
@@ -71,6 +74,7 @@ def hash_word(text, algo):
     hashed_word.update(text.encode())
     return hashed_word.hexdigest()
 
+# Function to crack the hash
 def crack_hash(path):
     """ Try to crack the hash provided by the user.
 
@@ -94,11 +98,13 @@ def crack_hash(path):
         print("\n%s[-] {} %s".format(e) %(red,reset))
         sys.exit(1)
 
+# Main function
 def main():
     check_hash()
     wordlist = get_wordlist()
     crack_hash(wordlist)
 
+# Execute main and terminate if keyboard interrupt is received
 if __name__ == "__main__":
     try:
         main()
