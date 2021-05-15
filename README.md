@@ -33,6 +33,8 @@ optional arguments:
   -w , --wordlist   Path to your wordlist
 ```
 
+Use the script with `-h` or `--help` flag to see it's usage.
+
 ---
 **NOTE**
 
