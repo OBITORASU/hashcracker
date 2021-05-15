@@ -1,12 +1,18 @@
 import hashlib
 import sys
 import os
+import argparse
 
 # Set colours for better visuals
 red = "\033[91m"
 green = "\033[92m"    
-
 reset = "\033[0m"
+
+parser = argparse.ArgumentParser(description="Hashcracker is a quick script that cracks common hashes using Python")
+parser.add_argument("-H", "--hash", type=str, metavar="", required=True, help="Your hash")
+parser.add_argument("-t", "--type", type=str, metavar="", required=True, help="Type of your hash supported hashes [sha1, sha224, sha256, sha384, sha512, md5]")
+parser.add_argument("-w", "--wordlist", type=str, metavar="", required=True, help="Path to your wordlist")
+args = parser.parse_args()
 
 # Define banner
 banner = """%s
@@ -19,100 +25,79 @@ banner = """%s
                                                                                                                    
 """ % green
 
-# Create a list of supported hash
-supported_hashes = ["sha1", "sha224", "sha256", "sha384", "sha512", "md5"]
-
 #Display banner
 print(banner)
 
-# Get hash type from user
-print("\n%sSupported hashes sha1, sha224, sha256, sha384, sh512, md5%s" %(green,reset)) 
-hashtype = input("\n%sEnter the type of your hash: %s" %(green,reset))
-hashtype = hashtype.casefold()
+# Create a list of supported hash
+supported_hashes = {"sha1": 40, "sha224": 56, "sha256": 64, "sha384": 96, "sha512": 128, "md5": 32}
 
-# Sanitize input and check if hashtype is supported
-if hashtype.isspace():
-    print("\n%s[-] Invalid input! %s" %(red,reset))
-    sys.exit(1)
+def check_hash():
+    """ Validate the type and length of hash provided by the user.
+    """
+    
+    hash_length = len(args.hash.casefold())
+    hashtype = args.type
+    if hashtype.isspace():
+        print("\n%s[-] Invalid input! %s" %(red,reset))
+        sys.exit(1)
 
-elif hashtype not in supported_hashes:
-    print("\n%s[-] {} is not supported by this program %s".format(hashtype) %(red,reset))
-    sys.exit(1)
+    elif hashtype not in supported_hashes.keys():
+        print("\n%s[-] {} is not supported by this program %s".format(hashtype) %(red,reset))
+        sys.exit(1)
+    
+    if hash_length != supported_hashes[hashtype]:
+        print("\n%s[-] Invalid length for {} hash type %s".format(hashtype) %(red,reset))
+        sys.exit(1)
 
-# Get hash value and check if its a valid hash
-hashvalue = input("%sEnter your hash: %s" %(green, reset))
-hashvalue = hashvalue.casefold()
+def get_wordlist():
+    """ Get the wordlist from the user.
 
-if hashtype=="md5" and len(hashvalue)!=32:
-    print("\n%s[-] Invalid md5 hash %s" %(red,reset))
-    sys.exit(1)
+    Returns:
+        abs_file_path([string]): Path to wordlist.
+    """
+    wordlist = args.wordlist
+    script_dir = os.path.dirname(__file__)
+    abs_file_path = os.path.join(script_dir, wordlist)
+    return abs_file_path
 
-elif hashtype=="sha1" and len(hashvalue)!=40:
-    print("\n%s[-] Invalid sha1 hash %s" %(red,reset))
-    sys.exit(1)
+def hash_word(text, algo):
+    """ Takes plain text and hashing algorithm from user and returns the hashed value.
 
-elif hashtype=="sha224" and len(hashvalue)!=56:
-    print("\n%s[-] Invalid sha224 hash %s" %(red,reset))
-    sys.exit(1)
+    Args:
+        text ([string]): Plain text to be hashed.
+        algo ([string]): Algorithm to be used for hashing.
 
-elif hashtype=="sha256" and len(hashvalue)!=64:
-    print("\n%s[-] Invalid sha256 hash %s" %(red,reset))
-    sys.exit(1)
+    Returns:
+        hashed_word([str]): Hashed value of the plain text passed.
+    """
+    hashed_word = hashlib.new(algo)
+    hashed_word.update(text.encode())
+    return hashed_word.hexdigest()
 
-elif hashtype=="sha384" and len(hashvalue)!=96:
-    print("\n%s[-] Invalid sha384 hash %s" %(red,reset))
-    sys.exit(1)
-
-elif hashtype=="sha512" and len(hashvalue)!=128:
-    print("\n%s[-] Invalid sha512 hash %s" %(red,reset))
-    sys.exit(1)
-
-# Get path to wordlist
-wordlist = input("%sProvide path to wordlist: %s" %(green,reset))
-script_dir = os.path.dirname(__file__)
-abs_file_path = os.path.join(script_dir, wordlist)
-
-try:
-
-    print("\n%s[+] Trying to crack the hash... %s" %(green,reset))
-    # Open words from wordlist
-    for words in open(abs_file_path, "r", encoding="ISO-8859-1"):
-        # Encode each word and compare them with given hash until match found
-        if hashtype=="md5":
-            currenthash=hashlib.md5(words.replace("\n", "").encode()).hexdigest()
-            if currenthash==hashvalue:
-                print("\n%s[+] Hash cracked: {} %s".format(words.replace("\n", "")) %(green,reset))
+def crack_hash(path):
+    try:
+        print("\n%s[+] Trying to crack the hash... %s" %(green,reset))
+        for words in open(path, "r", encoding="ISO-8859-1"):
+            word = words.rstrip("\n")
+            hashed_word = hash_word(word, args.type)
+            if args.hash == hashed_word:
+                print("\n%s[+] Hash cracked: {} %s".format(word) %(green,reset))
                 sys.exit(0)
 
-        elif hashtype=="sha1":
-            currenthash=hashlib.sha1(words.replace("\n", "").encode()).hexdigest()
-            if currenthash==hashvalue:
-                print("\n%s[+] Hash cracked: {} %s".format(words.replace("\n", "")) %(green,reset))
-                sys.exit(0)
-        
-        elif hashtype=="sha256":
-            currenthash=hashlib.sha256(words.replace("\n", "").encode()).hexdigest()
-            if currenthash==hashvalue:
-                print("\n%s[+] Hash cracked: {} %s".format(words.replace("\n", "")) %(green,reset))
-                sys.exit(0)
-        
-        elif hashtype=="sha384":
-            currenthash=hashlib.sha384(words.replace("\n", "").encode()).hexdigest()
-            if currenthash==hashvalue:
-                print("\n%s[+] Hash cracked: {} %s".format(words.replace("\n", "")) %(green,reset))
-                sys.exit(0)
+        print("\n%s[-] Wordlist exhausted hash not found! %s" %(red,reset))
+        sys.exit(1)
 
-        elif hashtype=="sha512":
-            currenthash=hashlib.sha512(words.replace("\n", "").encode()).hexdigest()
-            if currenthash==hashvalue:
-                print("\n%s[+] Hash cracked: {} %s".format(words.replace("\n", "")) %(green,reset))
-                sys.exit(0)
-        
-    # If match found print cracked hash else print wordlist exhausted and exit
-    print("\n%s[-] Wordlist exhausted hash not found! %s" %(red,reset))
-    sys.exit(1)
+    except Exception as e:
+        print("\n%s[-] {} %s".format(e) %(red,reset))
+        sys.exit(1)
 
-# Exception if path is undefined or incorrect 
-except Exception as e:
-    print("\n%s[-] {} %s".format(e) %(red,reset))
-    sys.exit(1)
+def main():
+    check_hash()
+    wordlist = get_wordlist()
+    crack_hash(wordlist)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n%s[-] SIGTERM received terminating! %s" %(red,reset))
