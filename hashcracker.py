@@ -35,7 +35,7 @@ print(banner)
 # Create a dictionary containing supported hashes and their respective lengths
 supported_hashes = {"sha1": 40, "sha224": 56, "sha256": 64, "sha384": 96, "sha512": 128, "md5": 32}
 
-# Function to validate hash
+# Function to validate the given hash and its length
 def check_hash():
     """ Validate the type and length of hash provided by the user.
     """
