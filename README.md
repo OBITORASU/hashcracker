@@ -1,6 +1,6 @@
 # hashcracker is a hash cracking script made in Python
 
-`hashcracker` is a terminal based python script which uses a dictionary attack on supported hashing algorithms to crack the provided hashes. Currently `hashcracker` supports some of the most common algorithms a penetration tester might encounter during a pentest, namely `sha1, sha224, sha256, sha384, sha512 and md5`. ```hashcracker``` is implemented using ```hashlib``` in Python.
+`hashcracker` is a terminal based python script which uses a dictionary attack on supported hashing algorithms to crack the provided hashes. Currently `hashcracker` supports some of the most common algorithms a penetration tester might encounter during a pentest, namely `sha1, sha224, sha256, sha384, sha512 and md5`. This script is implemented using ```hashlib``` in Python.
 
 ## Prerequisites:
 - `python 3`
