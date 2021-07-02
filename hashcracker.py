@@ -51,7 +51,7 @@ def check_hash():
         print("\n%s[-] Invalid length for {} hash type %s".format(hashtype) %(red,reset))
         sys.exit(1)
 
-# Function to recieve path to wordlist
+# Function to recieve path to wordlist and validate it
 def get_wordlist():
     """ Get the wordlist from the user.
 
