@@ -14,7 +14,7 @@ reset = "\033[0m"
 # Create parser and its arguments
 parser = argparse.ArgumentParser(description="Hashcracker is a quick script that cracks common hashes using Python.")
 parser.add_argument("-H", "--hash", type=str, metavar="", required=True, help="Your hash")
-parser.add_argument("-t", "--type", type=str, metavar="", required=True, help="Type of your hash supported hashes [sha1, sha224, sha256, sha384, sha512, md5]")
+parser.add_argument("-t", "--type", type=str, metavar="", required=True, help="Type of your hash. Supported hashes [sha1, sha224, sha256, sha384, sha512, md5]")
 parser.add_argument("-w", "--wordlist", type=str, metavar="", required=True, help="Path to your wordlist")
 args = parser.parse_args()
 
